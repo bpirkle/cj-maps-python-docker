@@ -1,0 +1,25 @@
+services:
+  cj-backend:
+    image: docker-registry.wikimedia.org/dev/bookworm-php83-fpm:1.0.0
+    user: "${CJ_DOCKER_UID}:${CJ_DOCKER_GID}"
+    volumes:
+      - ./:/var/www/html/w:cached
+    env_file:
+      - '.env'
+    environment:
+      CJ_SERVER: 'http://localhost:${CJ_DOCKER_PORT:-8080}'
+      CJ_DOCKER_PORT: "${CJ_DOCKER_PORT:-8080}"
+      CJ_SCRIPT_PATH: '/w'
+      CJ_SITENAME: 'Caitlins Site'
+
+  cj-web:
+    image: docker-registry.wikimedia.org/dev/bookworm-apache2:1.0.1
+    user: "${CJ_DOCKER_UID}:${CJ_DOCKER_GID}"
+    ports:
+      - "${CJ_DOCKER_PORT:-8080}:8080"
+    volumes:
+      - ./:/var/www/html/w:cached
+    env_file:
+      - '.env'
+    environment:
+      CJ_DOCKER_PORT: "${CJ_DOCKER_PORT:-8080}"

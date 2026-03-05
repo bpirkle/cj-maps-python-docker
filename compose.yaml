@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8089:8089"
+    volumes:
+      - .:/app # Mounts your local project directory to the container's working directory for live development
